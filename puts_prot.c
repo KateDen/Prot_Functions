@@ -14,7 +14,7 @@ int prot_puts ()
     int cat;
     cat = getchar();
 
-    while (cat != EOF )
+    while (cat != EOF)
     {
     if (cat == '\t')
         return 0;
