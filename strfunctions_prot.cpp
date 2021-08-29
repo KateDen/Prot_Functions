@@ -7,7 +7,7 @@
 int prot_puts (char* str);
 void TEST_prot_puts ();
 
-int prot_strchr (char* str, int* ch);
+int prot_strchr (char* str, int ch);
 void TEST_prot_strchr ();
 
 int prot_strlen (char* str);
@@ -25,7 +25,7 @@ void TEST_prot_strcat ();
 char* prot_strncat (char* str1, char* str2, int n);
 void TEST_prot_strncat ();
 
-char* prot_fgets (char* str_inp, int n, char* str_out);
+char* prot_fgets (FILE* str_inp, int n, char* str_out);
 void TEST_prot_fgets ();
 
 char* prot_strdup (char* str);
@@ -79,11 +79,12 @@ void TEST_prot_puts ()
 
 
 /*!STRCHR!*/
-int prot_strchr (char* str, int* ch)
+int prot_strchr (char* str, int ch)
 {
     int i = 0;
-    for (; str[i] != *ch; i++) {};
+    for (; str[i] != ch; i++) {;}
 
+    if (str[i] == NULL) return NULL;
     return i+1;
 }
 
@@ -92,7 +93,7 @@ void TEST_prot_strchr ()
     char str [] = "Find me if you can";
     int ch = 'y';
 
-    printf ("\nSymbol 'y' in line str has number %d\n", prot_strchr (str, &ch));
+    printf ("\nSymbol 'y' in line str has number %d\n", prot_strchr (str, ch));
 }
 
 
@@ -142,8 +143,7 @@ void TEST_prot_strcpy ()
 /*!STRNCPY!*/
 char* prot_strncpy (char* str_inp, char* str_cpy, int n)
 {
-    int i = 0;
-    for (; str_inp[i] != '\0' && i != n; i++)
+    for (int i = 0; str_inp[i] != '\0' && i != n; i++)
     {
         str_cpy[i] = str_inp[i];
     }
@@ -183,7 +183,7 @@ void TEST_prot_strcat ()
     char line [MAX] = "The line";
     char add [MAX] = " and add";
 
-    prot_strcat(line, add);
+    prot_strcat (line, add);
 
     printf ("\nline: %s\n", line);
 }
@@ -217,16 +217,31 @@ void TEST_prot_strncat ()
 
 
 /*!FGETS!*/
-char* prot_fgets (char* str_inp, int n, char* str_out)
+char* prot_fgets (FILE* str_inp, int n, char* str_out)
 {
     int i = 0;
+    char ch = 0;
 
-    for (; str_inp[i] != '\0' && str_inp[i] != '\n' && str_inp[i] != EOF &&  i != (n-1) ; i++)
+    for (; i != (n-1); i++)
     {
-        str_out[i] = str_inp[i];
-    }
+        ch = getc (str_inp);
 
-    if (str_out[i] == EOF) return NULL;
+        if (ch == '\n')
+        {
+            str_out[i] = '\n';
+            str_out[i+1] = '\0';
+
+            return str_out;
+        }
+
+        if (ch == EOF)
+        {
+            str_out[i] = '\0';
+            return str_out;
+        }
+
+        str_out[i] = ch;
+    }
 
     str_out[i] = '\0';
     return str_out;
@@ -234,19 +249,18 @@ char* prot_fgets (char* str_inp, int n, char* str_out)
 
 void TEST_prot_fgets ()
 {
-    char str_inp [] = {"This line contains 29 symbols"};
     char str_out [50] = {};
 
-    int n = sizeof(str_out);
+    int n = prot_strlen (str_out);
 
-    printf ("\nWas read: %s\n", prot_fgets(str_inp, n, str_out));
+    printf ("\nWas read: %s\n", prot_fgets(stdin, n, str_out));
 }
 
 
 /*!STRDUP!*/
 char* prot_strdup (char* str)
 {
-    char* addr = (char*) malloc(sizeof(str) + 1);
+    char* addr = (char*) calloc (prot_strlen (str) + 1, sizeof (char));
 
     if (addr == NULL) return NULL;
 
