@@ -111,7 +111,7 @@ void TEST_prot_strlen ()
 {
     char str [] = {"This line has 24 symbols"};
 
-    printf ("\nsymbols in the line: %d\n", prot_strlen(str));
+    printf ("\nsymbols in the line: %d\n", prot_strlen (str));
 }
 
 
@@ -239,14 +239,14 @@ void TEST_prot_fgets ()
 
     int n = sizeof(str_out);
 
-    printf ("\nWas read: %s\n", prot_fgets(str_inp, n, str_out));
+    printf ("\nWas read: %s\n", prot_fgets (str_inp, n, str_out));
 }
 
 
 /*!STRDUP!*/
 char* prot_strdup (char* str)
 {
-    char* addr = (char*) malloc(sizeof(str) + 2);
+    char* addr = (char*) malloc (sizeof(str) + 2);
 
     //printf ("%d\n", sizeof(str));                        !!!
 
@@ -269,7 +269,7 @@ void TEST_prot_strdup ()
 
     printf ("\nCopy: %s\n", prot_strdup (str));
 
-    free(prot_strdup (str));
+    free (prot_strdup (str));
 }
 
 
@@ -295,7 +295,7 @@ void TEST_prot_getline ()
 
     int str_size = 100;
 
-    printf ("\nGot: %s\n", prot_getline(str, str_size, str_read));
+    printf ("\nGot: %s\n", prot_getline (str, str_size, str_read));
 }
 
 
