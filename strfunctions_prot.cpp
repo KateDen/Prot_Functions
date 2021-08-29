@@ -16,22 +16,22 @@ void TEST_prot_strlen ();
 char* prot_strcpy (char* str_inp, char* str_cpy);
 void TEST_prot_strcpy ();
 
-char* prot_strncpy (char* str_inp, char* str_cpy, int* n);
+char* prot_strncpy (char* str_inp, char* str_cpy, int n);
 void TEST_prot_strncpy ();
 
 char* prot_strcat (char* str1, char* str2);
 void TEST_prot_strcat ();
 
-char* prot_strncat (char* str1, char* str2, int* n);
+char* prot_strncat (char* str1, char* str2, int n);
 void TEST_prot_strncat ();
 
-char* prot_fgets (char* str_inp, int* n, char* str_out);
+char* prot_fgets (char* str_inp, int n, char* str_out);
 void TEST_prot_fgets ();
 
 char* prot_strdup (char* str);
 void TEST_prot_strdup ();
 
-char* prot_getline (char* str, int* str_size, char* str_read);
+char* prot_getline (char* str, int str_size, char* str_read);
 void TEST_prot_getline ();
 
 int prot_strcmp (char* str1, char* str2);
@@ -119,6 +119,7 @@ void TEST_prot_strlen ()
 char* prot_strcpy (char* str_inp, char* str_cpy)
 {
     int i = 0;
+
     for (; str_inp[i] != '\0'; i++)
     {
         str_cpy[i] = str_inp[i];
@@ -139,10 +140,10 @@ void TEST_prot_strcpy ()
 
 
 /*!STRNCPY!*/
-char* prot_strncpy (char* str_inp, char* str_cpy, int* n)
+char* prot_strncpy (char* str_inp, char* str_cpy, int n)
 {
     int i = 0;
-    for (; i <= *n; i++)
+    for (; str_inp[i] != '\0' && i != n; i++)
     {
         str_cpy[i] = str_inp[i];
     }
@@ -156,7 +157,7 @@ void TEST_prot_strncpy ()
     char str_cpy [100] = {};
     int n = 6;
 
-    prot_strncpy (str_inp, str_cpy, &n);
+    prot_strncpy (str_inp, str_cpy, n);
 
     printf ("\nstrcpy line: %s\n", str_cpy);
 }
@@ -189,12 +190,12 @@ void TEST_prot_strcat ()
 
 
 /*!STRNCAT!*/
-char* prot_strncat (char* str1, char* str2, int* n)
+char* prot_strncat (char* str1, char* str2, int n)
 {
     int nLine = prot_strlen(str1);
     int k = 0;
 
-    for (; k <= *n; k++)
+    for (; str2[k] != '\0' && k <= n; k++)
     {
         str1[k + nLine] = str2[k];
     }
@@ -209,18 +210,18 @@ void TEST_prot_strncat ()
     char add [MAX] = " and add";
     int n = 6;
 
-    prot_strncat(line, add, &n);
+    prot_strncat(line, add, n);
 
     printf ("\nline: %s\n", line);
 }
 
 
 /*!FGETS!*/
-char* prot_fgets (char* str_inp, int* n, char* str_out)
+char* prot_fgets (char* str_inp, int n, char* str_out)
 {
     int i = 0;
 
-    for (; str_inp[i] != '\0' && str_inp[i] != '\n' && str_inp[i] != EOF &&  i != (*n-1) ; i++)
+    for (; str_inp[i] != '\0' && str_inp[i] != '\n' && str_inp[i] != EOF &&  i != (n-1) ; i++)
     {
         str_out[i] = str_inp[i];
     }
@@ -238,7 +239,7 @@ void TEST_prot_fgets ()
 
     int n = sizeof(str_out);
 
-    printf ("\nWas read: %s\n", prot_fgets(str_inp, &n, str_out));
+    printf ("\nWas read: %s\n", prot_fgets(str_inp, n, str_out));
 }
 
 
@@ -264,7 +265,7 @@ char* prot_strdup (char* str)
 
 void TEST_prot_strdup ()
 {
-    char str [] = {"Hello"};
+    char str [] = {"Hello!"};
 
     printf ("\nCopy: %s\n", prot_strdup (str));
 
@@ -273,11 +274,11 @@ void TEST_prot_strdup ()
 
 
 /*!GETLINE!*/
-char* prot_getline (char* str, int* str_size, char* str_read)
+char* prot_getline (char* str, int str_size, char* str_read)
 {
     int i = 0;
 
-    for (; str[i] != '\0' && i != (*str_size - 1); i++)
+    for (; str[i] != '\0' && i != (str_size - 1); i++)
     {
         str_read[i] = str[i];
     }
@@ -294,7 +295,7 @@ void TEST_prot_getline ()
 
     int str_size = 100;
 
-    printf ("\nGot: %s\n", prot_getline(str, &str_size, str_read));
+    printf ("\nGot: %s\n", prot_getline(str, str_size, str_read));
 }
 
 
@@ -302,8 +303,8 @@ void TEST_prot_getline ()
 int prot_strcmp (char* str1, char* str2)
 {
     int i = 0;
-    int s1 = 0;
-    int s2 = 0;
+    char s1;
+    char s2;
 
     for (; (str1[i] = str2[i] && str1[i] != '\0' && str2[i] != '\0'); i++)
     {
@@ -313,7 +314,7 @@ int prot_strcmp (char* str1, char* str2)
 
     if (s1 > s2)  return  1;
     if (s1 < s2)  return -1;
-    if (s1 == '\0' || s2 == '\0') return  0;
+    return  0;
 }
 
 void TEST_prot_strcmp ()
