@@ -111,7 +111,7 @@ void TEST_prot_strlen ()
 {
     char str [] = {"This line has 24 symbols"};
 
-    printf ("\nsymbols in the line: %d\n", prot_strlen (str));
+    printf ("\nsymbols in the line: %d\n", prot_strlen(str));
 }
 
 
@@ -239,16 +239,14 @@ void TEST_prot_fgets ()
 
     int n = sizeof(str_out);
 
-    printf ("\nWas read: %s\n", prot_fgets (str_inp, n, str_out));
+    printf ("\nWas read: %s\n", prot_fgets(str_inp, n, str_out));
 }
 
 
 /*!STRDUP!*/
 char* prot_strdup (char* str)
 {
-    char* addr = (char*) malloc (sizeof(str) + 2);
-
-    //printf ("%d\n", sizeof(str));                        !!!
+    char* addr = (char*) malloc(sizeof(str) + 1);
 
     if (addr == NULL) return NULL;
 
@@ -269,7 +267,7 @@ void TEST_prot_strdup ()
 
     printf ("\nCopy: %s\n", prot_strdup (str));
 
-    free (prot_strdup (str));
+    free(prot_strdup (str));
 }
 
 
@@ -295,7 +293,7 @@ void TEST_prot_getline ()
 
     int str_size = 100;
 
-    printf ("\nGot: %s\n", prot_getline (str, str_size, str_read));
+    printf ("\nGot: %s\n", prot_getline(str, str_size, str_read));
 }
 
 
@@ -303,18 +301,13 @@ void TEST_prot_getline ()
 int prot_strcmp (char* str1, char* str2)
 {
     int i = 0;
-    char s1;
-    char s2;
+    int s1;
+    int s2;
 
-    for (; (str1[i] = str2[i] && str1[i] != '\0' && str2[i] != '\0'); i++)
-    {
-        s1 = str1[i];
-        s2 = str2[i];
-    }
+    for (; (str1[i] == str2[i] && str1[i] != '\0' && str2[i] != '\0'); i++)
+    {;}
 
-    if (s1 > s2)  return  1;
-    if (s1 < s2)  return -1;
-    return  0;
+     return (str1[i] - str2[i]);
 }
 
 void TEST_prot_strcmp ()
@@ -322,25 +315,14 @@ void TEST_prot_strcmp ()
     char str1 [] = {"Hello World!"};
     char str2 [] = {"Hello World!"};
 
-    //printf ("%d\n", 'o');
-    //printf ("%d\n", 'e');
+    /*printf ("%d\n", 'e');
+    printf ("%d\n", 'o');*/
 
+    int s = prot_strcmp (str1, str2);
 
-    switch (prot_strcmp (str1, str2))
-    {
-        case 0:
-            printf ("\nThe lines are identical.\n");
-            break;
+    if (s < 0) printf ("\nThe lines are not identical l1 < l2 (%d).\n", s);
 
-        case 1:
-            printf ("\nThe lines are not identical l1 > l2 (%d).\n", prot_strcmp (str1, str2));
-            break;
+    else if (s > 0) printf ("\nThe lines are not identical l1 > l2 (%d).\n", s);
 
-        case -1:
-            printf ("\nThe lines are not identical l1 < l2 (%d).\n", prot_strcmp (str1, str2));
-            break;
-
-        default:
-            printf ("\nError\n");
-    }
+    else if (s == 0) printf ("\nThe lines are identical.\n");
 }
