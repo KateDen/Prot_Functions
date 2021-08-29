@@ -7,7 +7,7 @@
 int prot_puts (char* str);
 void TEST_prot_puts ();
 
-int prot_strchr (char* str, int ch);
+char* prot_strchr (char* str, int ch);
 void TEST_prot_strchr ();
 
 int prot_strlen (char* str);
@@ -41,9 +41,9 @@ void TEST_prot_strcmp ();
 /*! main !*/
 int main ()
 {
-    TEST_prot_puts ();
+    //TEST_prot_puts ();
     TEST_prot_strchr ();
-    TEST_prot_strlen ();
+    /*TEST_prot_strlen ();
     TEST_prot_strcpy ();
     TEST_prot_strncpy ();
     TEST_prot_strcat ();
@@ -51,7 +51,7 @@ int main ()
     TEST_prot_fgets ();
     TEST_prot_strdup ();
     TEST_prot_getline ();
-    TEST_prot_strcmp ();
+    TEST_prot_strcmp ();*/
 
     return 0;
 }
@@ -79,13 +79,15 @@ void TEST_prot_puts ()
 
 
 /*!STRCHR!*/
-int prot_strchr (char* str, int ch)
+char* prot_strchr (char* str, int ch)
 {
     int i = 0;
-    for (; str[i] != ch; i++) {;}
+    for (; str[i] != ch ; i++)
+    {
+        if (str[i] == '\0') return NULL;
+    }
 
-    if (str[i] == NULL) return NULL;
-    return i+1;
+    return str + i;
 }
 
 void TEST_prot_strchr ()
@@ -93,7 +95,7 @@ void TEST_prot_strchr ()
     char str [] = "Find me if you can";
     int ch = 'y';
 
-    printf ("\nSymbol 'y' in line str has number %d\n", prot_strchr (str, ch));
+    printf ("\nSymbol 'y' in line str has number %d\n", prot_strchr (str, ch) - str);
 }
 
 
@@ -126,6 +128,7 @@ char* prot_strcpy (char* str_inp, char* str_cpy)
         str_cpy[i] = str_inp[i];
     }
 
+    str_cpy[i] = '\0';
     return str_cpy;
 }
 
@@ -148,6 +151,7 @@ char* prot_strncpy (char* str_inp, char* str_cpy, int n)
         str_cpy[i] = str_inp[i];
     }
 
+    if (i <= n) str_inp[i] = '\0';
     return str_cpy;
 }
 
@@ -195,7 +199,7 @@ char* prot_strncat (char* str1, char* str2, int n)
     int nLine = prot_strlen(str1);
     int k = 0;
 
-    for (; str2[k] != '\0' && k <= n; k++)
+    for (; str2[k] != '\0' && k <= n - 1; k++)
     {
         str1[k + nLine] = str2[k];
     }
@@ -319,7 +323,7 @@ int prot_strcmp (char* str1, char* str2)
     for (; (str1[i] == str2[i] && str1[i] != '\0' && str2[i] != '\0'); i++)
     {;}
 
-     return (str1[i] - str2[i]);
+    return (str1[i] - str2[i]);
 }
 
 void TEST_prot_strcmp ()
