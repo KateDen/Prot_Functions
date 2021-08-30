@@ -7,7 +7,7 @@
 int prot_puts (char* str);
 void TEST_prot_puts ();
 
-char* prot_strchr (char* str, int ch);
+char* prot_strchr (char* str, int s);
 void TEST_prot_strchr ();
 
 int prot_strlen (char* str);
@@ -41,9 +41,9 @@ void TEST_prot_strcmp ();
 /*! main !*/
 int main ()
 {
-    //TEST_prot_puts ();
+    TEST_prot_puts ();
     TEST_prot_strchr ();
-    /*TEST_prot_strlen ();
+    TEST_prot_strlen ();
     TEST_prot_strcpy ();
     TEST_prot_strncpy ();
     TEST_prot_strcat ();
@@ -51,7 +51,7 @@ int main ()
     TEST_prot_fgets ();
     TEST_prot_strdup ();
     TEST_prot_getline ();
-    TEST_prot_strcmp ();*/
+    TEST_prot_strcmp ();
 
     return 0;
 }
@@ -60,20 +60,20 @@ int main ()
 /*!PUTS!*/
 int prot_puts (char* str)
 {
-    int k = 0;
+    int i = 0;
 
-    for (; str[k] != '\0'; k++)
+    for (; str[i] != '\0'; i++)
     {
-        putchar (str[k]);
+        putchar (str[i]);
     }
 
-    str[k] = '\n';
+    str[i] = '\n';
     return 0;
 }
 
 void TEST_prot_puts ()
 {
-    char str[] = {"Hello World!\n"};
+    char str[] = "Hello World!\n";
     prot_puts (str);
 }
 
@@ -92,29 +92,29 @@ char* prot_strchr (char* str, int ch)
 
 void TEST_prot_strchr ()
 {
-    char str [] = "Find me if you can";
+    char str [] = "Find me if you cat";
     int ch = 'y';
 
-    printf ("\nSymbol 'y' in line str has number %d\n", prot_strchr (str, ch) - str);
+    printf ("\n" "Symbol 'y' in line str has number %d\n", prot_strchr (str, ch) - str);
 }
 
 
 /*!STRLEN!*/
 int prot_strlen (char* str)
 {
-    int nc = 0;
+    int len = 0;
 
-    while (str[nc] != '\0')
-        ++nc;
+    while (str[len] != '\0')
+        ++len;
 
-    return nc;
+    return len;
 }
 
 void TEST_prot_strlen ()
 {
-    char str [] = {"This line has 24 symbols"};
+    char str [] = "This line has 24 symbols";
 
-    printf ("\nsymbols in the line: %d\n", prot_strlen(str));
+    printf ("\n" "symbols in the line: %d\n", prot_strlen(str));
 }
 
 
@@ -134,19 +134,20 @@ char* prot_strcpy (char* str_inp, char* str_cpy)
 
 void TEST_prot_strcpy ()
 {
-    char str_inp [] = {"Line one\0 line two"};
+    char str_inp [] = "Line one\0 line two";
     char str_cpy [100] = {};
 
     prot_strcpy (str_inp, str_cpy);
 
-    printf ("\nstrcpy line: %s\n", str_cpy);
+    printf ("\n" "strcpy line: %s\n", str_cpy);
 }
 
 
 /*!STRNCPY!*/
 char* prot_strncpy (char* str_inp, char* str_cpy, int n)
 {
-    for (int i = 0; str_inp[i] != '\0' && i != n; i++)
+    int i = 0;
+    for (; str_inp[i] != '\0' && i != n; i++)
     {
         str_cpy[i] = str_inp[i];
     }
@@ -157,13 +158,13 @@ char* prot_strncpy (char* str_inp, char* str_cpy, int n)
 
 void TEST_prot_strncpy ()
 {
-    char str_inp [] = {"Line one\0 line two"};
+    char str_inp [] = "Line one\0 line two";
     char str_cpy [100] = {};
     int n = 6;
 
     prot_strncpy (str_inp, str_cpy, n);
 
-    printf ("\nstrcpy line: %s\n", str_cpy);
+    printf ("\n" "strcpy line: %s\n", str_cpy);
 }
 
 
@@ -171,14 +172,14 @@ void TEST_prot_strncpy ()
 char* prot_strcat (char* str1, char* str2)
 {
     int nLine = prot_strlen(str1);
-    int k = 0;
+    int i = 0;
 
-    for (; str2[k] != '\0'; k++)
+    for (; str2[i] != '\0'; i++)
     {
-        str1[k + nLine] = str2[k];
+        str1[i + nLine] = str2[i];
     }
 
-    str1[k + nLine] = '\0';
+    str1[i + nLine] = '\0';
     return str1;
 }
 
@@ -189,7 +190,7 @@ void TEST_prot_strcat ()
 
     prot_strcat (line, add);
 
-    printf ("\nline: %s\n", line);
+    printf ("\n" "line: %s\n", line);
 }
 
 
@@ -216,7 +217,7 @@ void TEST_prot_strncat ()
 
     prot_strncat(line, add, n);
 
-    printf ("\nline: %s\n", line);
+    printf ("\n" "line: %s\n", line);
 }
 
 
@@ -224,7 +225,7 @@ void TEST_prot_strncat ()
 char* prot_fgets (FILE* str_inp, int n, char* str_out)
 {
     int i = 0;
-    char ch = 0;
+    int ch = 0;
 
     for (; i != (n-1); i++)
     {
@@ -234,14 +235,13 @@ char* prot_fgets (FILE* str_inp, int n, char* str_out)
         {
             str_out[i] = '\n';
             str_out[i+1] = '\0';
-
-            return str_out;
+            break;
         }
 
         if (ch == EOF)
         {
             str_out[i] = '\0';
-            return str_out;
+            break;
         }
 
         str_out[i] = ch;
@@ -257,7 +257,7 @@ void TEST_prot_fgets ()
 
     int n = prot_strlen (str_out);
 
-    printf ("\nWas read: %s\n", prot_fgets(stdin, n, str_out));
+    printf ("\n" "Was read: %s\n", prot_fgets(stdin, n, str_out));
 }
 
 
@@ -268,24 +268,16 @@ char* prot_strdup (char* str)
 
     if (addr == NULL) return NULL;
 
-    int i = 0;
-
-    for (; str[i] != '\0'; i++)
-    {
-        addr[i] = str[i];
-    }
-
-    addr[i] = '\0';
-    return addr;
+    return prot_strcpy (str, addr);
 }
 
 void TEST_prot_strdup ()
 {
-    char str [] = {"Hello!"};
+    char str [] = "Hello!";
 
-    printf ("\nCopy: %s\n", prot_strdup (str));
+    printf ("\n" "Copy: %s\n", prot_strdup (str));
 
-    free(prot_strdup (str));
+    free (prot_strdup (str));
 }
 
 
@@ -306,12 +298,12 @@ char* prot_getline (char* str, int str_size, char* str_read)
 
 void TEST_prot_getline ()
 {
-    char str [] = {"Hello!"};
+    char str [] = "Hello!";
     char str_read [100] = {};
 
     int str_size = 100;
 
-    printf ("\nGot: %s\n", prot_getline(str, str_size, str_read));
+    printf ("\n" "Got: %s\n", prot_getline(str, str_size, str_read));
 }
 
 
@@ -320,25 +312,21 @@ int prot_strcmp (char* str1, char* str2)
 {
     int i = 0;
 
-    for (; (str1[i] == str2[i] && str1[i] != '\0' && str2[i] != '\0'); i++)
-    {;}
+    for (; (str1[i] == str2[i] && str1[i] != '\0' && str2[i] != '\0'); i++) {;}
 
     return (str1[i] - str2[i]);
 }
 
 void TEST_prot_strcmp ()
 {
-    char str1 [] = {"Hello World!"};
-    char str2 [] = {"Hello World!"};
+    char str1 [] = "Hello World!";
+    char str2 [] = "Hello Werld!";
 
-    /*printf ("%d\n", 'e');
-    printf ("%d\n", 'o');*/
+    int returned = prot_strcmp (str1, str2);
 
-    int s = prot_strcmp (str1, str2);
+    if (returned < 0) printf ("\n" "The lines are not identical l1 < l2 (%d).\n", returned);
 
-    if (s < 0) printf ("\nThe lines are not identical l1 < l2 (%d).\n", s);
+    else if (returned > 0) printf ("\n" "The lines are not identical l1 > l2 (%d).\n", returned);
 
-    else if (s > 0) printf ("\nThe lines are not identical l1 > l2 (%d).\n", s);
-
-    else if (s == 0) printf ("\nThe lines are identical.\n");
+    else if (returned == 0) printf ("\n" "The lines are identical.\n");
 }
